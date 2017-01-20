@@ -5,11 +5,19 @@ namespace ConfigurationManager.Models
 {
     public class ConfigManager:IConfigManager
     {
-        public ConfigurationRoot ReadConfiguration(string path)
-        {
-            var map = new ExeConfigurationFileMap {ExeConfigFilename = path};
+        private IConfigurationRoot configuration;
 
-            return ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+        public ConfigManager()
+        {
+            configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json.config", optional: true)
+                .Build();
+        }
+        public T ReadConfiguration<T>(string key) where T : new()
+        {
+            var instance = new T();
+            configuration.GetSection(key).Bind(instance);
+            return instance;
         }
 
         public void SaveConfig(ConfigurationRoot configuration)

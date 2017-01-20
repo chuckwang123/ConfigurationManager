@@ -4,7 +4,7 @@ namespace ConfigurationManager.Interfaces
 {
     public interface IConfigManager
     {
-        ConfigurationRoot ReadConfiguration(string path);
+        T ReadConfiguration<T>(string key) where T : new();
         void SaveConfig(ConfigurationRoot configuration);
         void ClearConnectionStrings(ConfigurationRoot configuration);
     }
